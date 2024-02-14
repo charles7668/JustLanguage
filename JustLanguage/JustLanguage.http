@@ -1,0 +1,6 @@
+@JustLanguage_HostAddress = http://localhost:5098
+
+GET {{JustLanguage_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
