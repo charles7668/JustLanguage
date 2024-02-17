@@ -2,7 +2,6 @@
 using JustLanguage.Interfaces;
 using JustLanguage.Models;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 
 namespace JustLanguage.Extensions;
 

@@ -2,7 +2,7 @@ using JustLanguage.Extensions;
 using JustLanguage.Interfaces;
 using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog((context, service, config) =>
 {
@@ -17,8 +17,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-var scopeService = app.Services.CreateScope().ServiceProvider;
+WebApplication app = builder.Build();
+IServiceProvider scopeService = app.Services.CreateScope().ServiceProvider;
 
 // init app
 var initApp = scopeService.GetRequiredService<IInitApp>();

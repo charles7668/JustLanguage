@@ -12,8 +12,9 @@ public class InitApp : IInitApp
         _logger = logger;
     }
 
-    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<InitApp> _logger;
+
+    private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     /// Init application
@@ -28,13 +29,16 @@ public class InitApp : IInitApp
     private async void MigrateDb()
     {
         _logger.LogInformation("start migrate db");
-        var service = _serviceProvider;
+        IServiceProvider service = _serviceProvider;
         //get db context
         var context = service.GetRequiredService<AppDbContext>();
-        var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+        IEnumerable<string> pendingMigrations = await context.Database.GetPendingMigrationsAsync();
         // migrate db
         if (pendingMigrations.Any())
+        {
             await context.Database.MigrateAsync();
+        }
+
         _logger.LogInformation("finish migrate db");
     }
 }
