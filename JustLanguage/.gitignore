@@ -1,2 +1,3 @@
 # ignore front-end build folder
 /wwwroot
+JustLanguage.db*
