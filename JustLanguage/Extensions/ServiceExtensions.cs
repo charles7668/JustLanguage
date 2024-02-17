@@ -2,6 +2,7 @@
 using JustLanguage.Interfaces;
 using JustLanguage.Models;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace JustLanguage.Extensions;
 
@@ -23,6 +24,10 @@ public static class ServiceExtensions
     /// <param name="services"></param>
     private static void AddSqlite(this IServiceCollection services)
     {
-        services.AddDbContextPool<AppDbContext>(options => { options.UseSqlite("Data source=JustLanguage.db"); });
+        services.AddDbContextPool<AppDbContext>(options =>
+        {
+            options.UseSqlite("Data source=JustLanguage.db");
+            options.EnableSensitiveDataLogging(false);
+        });
     }
 }

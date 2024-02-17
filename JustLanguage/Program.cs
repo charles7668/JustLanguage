@@ -1,7 +1,21 @@
 using JustLanguage.Extensions;
 using JustLanguage.Interfaces;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .CreateLogger();
+
+Log.Logger.Information("Starting application");
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, service, config) =>
+{
+    config.ReadFrom.Configuration(context.Configuration)
+        .ReadFrom.Services(service).WriteTo.Console();
+});
 
 // Add services to the container.
 

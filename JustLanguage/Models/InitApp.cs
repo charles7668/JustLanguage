@@ -6,23 +6,28 @@ namespace JustLanguage.Models;
 
 public class InitApp : IInitApp
 {
-    public InitApp(IServiceProvider serviceProvider)
+    public InitApp(IServiceProvider serviceProvider, ILogger<InitApp> logger)
     {
         _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
     private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<InitApp> _logger;
 
     /// <summary>
     /// Init application
     /// </summary>
     public void Init()
     {
+        _logger.LogInformation("start init application");
         MigrateDb();
+        _logger.LogInformation("finish init application");
     }
 
     private async void MigrateDb()
     {
+        _logger.LogInformation("start migrate db");
         var service = _serviceProvider;
         //get db context
         var context = service.GetRequiredService<AppDbContext>();
@@ -30,5 +35,6 @@ public class InitApp : IInitApp
         // migrate db
         if (pendingMigrations.Any())
             await context.Database.MigrateAsync();
+        _logger.LogInformation("finish migrate db");
     }
 }
