@@ -1,4 +1,6 @@
 ﻿using JustLanguage.Entities;
+using JustLanguage.Interfaces;
+using JustLanguage.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace JustLanguage.Extensions;
@@ -11,6 +13,7 @@ public static class ServiceExtensions
     /// <param name="services"></param>
     public static void InitServices(this IServiceCollection services)
     {
+        services.AddScoped<IInitApp, InitApp>();
         services.AddSqlite();
     }
 

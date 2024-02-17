@@ -1,5 +1,5 @@
 using JustLanguage.Extensions;
-using JustLanguage.Services;
+using JustLanguage.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +12,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var scopeService = app.Services.CreateScope().ServiceProvider;
 
 // init app
-InitApp.MigrateDb(app);
+var initApp = scopeService.GetRequiredService<IInitApp>();
+initApp.Init();
 
 // use static files in wwwroot
 app.UseDefaultFiles();
