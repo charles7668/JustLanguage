@@ -14,3 +14,12 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{JustLanguage_HostAddress}}/Articles
+Content-Type: application/json
+
+{
+  "ArticleUrl" : "http://testurl.com"
+}
+
+###
