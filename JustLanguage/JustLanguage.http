@@ -4,3 +4,13 @@ GET {{JustLanguage_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{JustLanguage_HostAddress}}/api/ParseRules
+Content-Type: application/json
+
+{
+  "name": "Rule 1",
+  "rule" : "test"
+}
+
+###

@@ -1,7 +1,10 @@
-﻿using JustLanguage.Entities;
+﻿using JustLanguage.DataBase;
+using JustLanguage.Entities;
 using JustLanguage.Interfaces;
 using JustLanguage.Models;
+using JustLanguage.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace JustLanguage.Extensions;
 
@@ -13,8 +16,10 @@ public static class ServiceExtensions
     /// <param name="services"></param>
     public static void InitServices(this IServiceCollection services)
     {
+        services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
         services.AddScoped<IInitApp, InitApp>();
         services.AddSqlite();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
     /// <summary>
