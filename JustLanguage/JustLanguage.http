@@ -1,11 +1,6 @@
-@JustLanguage_HostAddress = http://localhost:5098
+@JustLanguage_HostAddress = http://localhost:5098/api
 
-GET {{JustLanguage_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
-
-POST {{JustLanguage_HostAddress}}/api/ParseRules
+POST {{JustLanguage_HostAddress}}/ParseRules
 Content-Type: application/json
 
 {
