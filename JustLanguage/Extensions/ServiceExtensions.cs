@@ -30,7 +30,7 @@ public static class ServiceExtensions
     {
         services.AddDbContextPool<AppDbContext>(options =>
         {
-            options.UseSqlite("Data source=JustLanguage.db");
+            options.UseSqlite("Data source=JustLanguage.db;foreign keys=true;");
             options.EnableSensitiveDataLogging(false);
         });
     }

@@ -5,7 +5,12 @@ Content-Type: application/json
 
 {
   "name": "Rule 1",
-  "rule" : "test"
+  "rule" : "test",
+  "SupportDomains" : [
+    {"domain" : "test1"} ,
+    {"domain" : "test2"} ,
+    {"domain" : "test3"}
+  ]
 }
 
 ###
