@@ -26,6 +26,18 @@ public class ParseRulesController : Controller
     public async Task<IActionResult> SetParseRules([FromBody] ParseRuleDTO ruleDto)
     {
         var rule = _mapper.Map<ParseRule>(ruleDto);
+        if (await _parseRuleRepository.HasDuplicateName(rule))
+        {
+            _logger.LogError("the name is exists");
+            return BadRequest("the name is exists");
+        }
+
+        if (await _parseRuleRepository.HasDuplicateDomain(rule))
+        {
+            _logger.LogError("the domain is exists");
+            return BadRequest("the domain is exists");
+        }
+
         _logger.LogInformation("Rule Name : {Name} , Rule : {Rule}", rule.Name, rule.Rule);
         await _parseRuleRepository.AddParseRule(rule);
         return Ok();
