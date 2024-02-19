@@ -3,12 +3,9 @@ import { reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { ParseRule, SupportDomain } from '@/Models/DefaultParseRule'
+import { postParseRules } from '@/Api/Api'
 
 const props = defineProps({
-  AddAction: {
-    type: Function,
-    required: true
-  },
   CloseAction: {
     type: Function,
     required: true
@@ -34,7 +31,7 @@ const rules = {
 }
 const v$ = useVuelidate(rules, state)
 
-const clickAdd = () => {
+const clickAdd = async () => {
   if (v$.value.$invalid) {
     window.alert('Please fill in all required fields')
     return
@@ -48,7 +45,14 @@ const clickAdd = () => {
   })
   let parseRule = new ParseRule(state.ruleName, domains)
   parseRule.Rule = rule
-  props.AddAction(parseRule)
+  let response = await postParseRules(parseRule)
+  if (response.status !== 200) {
+    window.alert(
+      'error : ' + response.status + ' ' + response.statusText + '\n' + (await response.text())
+    )
+    return
+  }
+  props.CloseAction()
 }
 </script>
 
