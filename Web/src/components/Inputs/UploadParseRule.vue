@@ -2,6 +2,7 @@
 import { reactive } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
+import { ParseRule, SupportDomain } from '@/Models/DefaultParseRule'
 
 const props = defineProps({
   AddAction: {
@@ -32,6 +33,23 @@ const rules = {
   getArticleXPath: {}
 }
 const v$ = useVuelidate(rules, state)
+
+const clickAdd = () => {
+  if (v$.value.$invalid) {
+    window.alert('Please fill in all required fields')
+    return
+  }
+  let domains = state.allowDomain.split(',').map((d) => new SupportDomain(d))
+  let rule = JSON.stringify({
+    getCoverXPath: state.getCoverXPath,
+    getAuthorXPath: state.getAuthorXPath,
+    getTitleXPath: state.getTitleXPath,
+    getArticleXPath: state.getArticleXPath
+  })
+  let parseRule = new ParseRule(state.ruleName, domains)
+  parseRule.Rule = rule
+  props.AddAction(parseRule)
+}
 </script>
 
 <template>
@@ -114,8 +132,8 @@ const v$ = useVuelidate(rules, state)
       >
       </v-text-field>
       <v-row justify="center">
-        <v-btn @click="props.CloseAction"> add </v-btn>
-        <v-btn @click="props.AddAction"> close </v-btn>
+        <v-btn @click="clickAdd"> add</v-btn>
+        <v-btn @click="props.CloseAction"> close</v-btn>
       </v-row>
     </form>
   </v-card>
