@@ -24,4 +24,10 @@ public interface IParseRuleRepository
     /// <param name="parseRule"></param>
     /// <returns></returns>
     public Task<bool> HasDuplicateDomain(ParseRule parseRule);
+
+    /// <summary>
+    /// get all parse rules name
+    /// </summary>
+    /// <returns></returns>
+    public Task<IEnumerable<string>> GetParseRulesNames();
 }

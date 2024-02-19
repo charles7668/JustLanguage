@@ -23,7 +23,7 @@ public class ParseRulesController : Controller
     private readonly IParseRuleRepository _parseRuleRepository;
 
     [HttpPost]
-    public async Task<IActionResult> SetParseRules([FromBody] ParseRuleDTO ruleDto)
+    public async Task<ActionResult> SetParseRules([FromBody] ParseRuleDTO ruleDto)
     {
         var rule = _mapper.Map<ParseRule>(ruleDto);
         if (await _parseRuleRepository.HasDuplicateName(rule))
@@ -41,5 +41,11 @@ public class ParseRulesController : Controller
         _logger.LogInformation("Rule Name : {Name} , Rule : {Rule}", rule.Name, rule.Rule);
         await _parseRuleRepository.AddParseRule(rule);
         return Ok();
+    }
+
+    [HttpGet("names")]
+    public async Task<ActionResult<IEnumerable<string>>> GetParseRulesNames()
+    {
+        return Ok(await _parseRuleRepository.GetParseRulesNames());
     }
 }

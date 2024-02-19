@@ -39,4 +39,10 @@ public class ParseRuleRepository : IParseRuleRepository
 
         return false;
     }
+
+    /// <inheritdoc />
+    public Task<IEnumerable<string>> GetParseRulesNames()
+    {
+        return Task.FromResult<IEnumerable<string>>(_context.ParseRule.Select(x => x.Name));
+    }
 }
