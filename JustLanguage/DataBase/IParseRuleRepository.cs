@@ -30,4 +30,11 @@ public interface IParseRuleRepository
     /// </summary>
     /// <returns></returns>
     public Task<IEnumerable<string>> GetParseRulesNames();
+
+    /// <summary>
+    /// get parse rule by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public Task<ParseRule?> GetParseRuleByName(string name);
 }

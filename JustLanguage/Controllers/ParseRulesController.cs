@@ -43,9 +43,17 @@ public class ParseRulesController : Controller
         return Ok();
     }
 
-    [HttpGet("names")]
-    public async Task<ActionResult<IEnumerable<string>>> GetParseRulesNames()
+    [HttpGet("{name}")]
+    public async Task<ActionResult<ParseRuleDTO>> GetParseRule(string name)
     {
-        return Ok(await _parseRuleRepository.GetParseRulesNames());
+        ParseRule? rule = await _parseRuleRepository.GetParseRuleByName(name);
+        if (rule == null)
+        {
+            return NotFound();
+        }
+
+        var dto = _mapper.Map<ParseRuleDTO>(rule);
+
+        return Ok(dto);
     }
 }

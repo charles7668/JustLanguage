@@ -45,4 +45,12 @@ public class ParseRuleRepository : IParseRuleRepository
     {
         return Task.FromResult<IEnumerable<string>>(_context.ParseRule.Select(x => x.Name));
     }
+
+    /// <inheritdoc />
+    public Task<ParseRule?> GetParseRuleByName(string name)
+    {
+        IQueryable<ParseRule> rules = _context.ParseRule.Where(x => x.Name == name).Include(x => x.SupportDomains);
+
+        return rules.FirstOrDefaultAsync();
+    }
 }
