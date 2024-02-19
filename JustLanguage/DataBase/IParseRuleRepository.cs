@@ -1,4 +1,5 @@
-﻿using JustLanguage.Entities;
+﻿using JustLanguage.DTOs;
+using JustLanguage.Entities;
 
 namespace JustLanguage.DataBase;
 
@@ -37,4 +38,12 @@ public interface IParseRuleRepository
     /// <param name="name"></param>
     /// <returns></returns>
     public Task<ParseRule?> GetParseRuleByName(string name);
+
+    /// <summary>
+    /// update parse rule by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="newRule"></param>
+    /// <returns></returns>
+    public Task<bool> UpdateParseRuleByName(string name, ParseRuleDTO newRule);
 }

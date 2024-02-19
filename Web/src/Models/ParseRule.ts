@@ -1,20 +1,20 @@
 class SupportDomain {
-  Domain: string
+  domain: string
 
   constructor(domain: string) {
-    this.Domain = domain
+    this.domain = domain
   }
 }
 
 class ParseRule {
-  Name: string
-  SupportDomains: Array<SupportDomain>
-  Rule: string
+  name: string
+  supportDomains: Array<SupportDomain>
+  rule: string
 
   constructor(ruleName: string, allowDomains: Array<SupportDomain>) {
-    this.Name = ruleName
-    this.SupportDomains = allowDomains
-    this.Rule = ''
+    this.name = ruleName
+    this.supportDomains = allowDomains
+    this.rule = ''
   }
 }
 

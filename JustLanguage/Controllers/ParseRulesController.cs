@@ -56,4 +56,16 @@ public class ParseRulesController : Controller
 
         return Ok(dto);
     }
+
+    [HttpPut("{name}")]
+    public async Task<ActionResult> UpdateParseRule(string name, [FromBody] ParseRuleDTO newRule)
+    {
+        bool success = await _parseRuleRepository.UpdateParseRuleByName(name, newRule);
+        if (!success)
+        {
+            return BadRequest("update failed");
+        }
+
+        return Ok();
+    }
 }
