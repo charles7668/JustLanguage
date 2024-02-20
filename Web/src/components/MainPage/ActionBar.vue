@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 import UploadParseRule from '../Inputs/ManageParseRules.vue'
-import UploadArticle from "@/components/Inputs/UploadArticle.vue";
+import UploadArticle from '@/components/Inputs/UploadArticle.vue'
 
 let dialog = ref(false)
 let uploadArticleDialog = ref(false)
@@ -20,9 +20,9 @@ const closeUploadArticleDialog = () => {
     <v-app-bar app color="cyan">
       <v-row justify="center">
         <v-btn variant="outlined"
-        >MANAGE RULES
+          >MANAGE RULES
           <v-dialog v-model="dialog" activator="parent" width="1000px" persistent>
-            <UploadParseRule :CloseAction="closeDialog"/>
+            <UploadParseRule :CloseAction="closeDialog" />
           </v-dialog>
         </v-btn>
         <v-btn variant="outlined">

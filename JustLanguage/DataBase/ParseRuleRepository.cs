@@ -93,4 +93,17 @@ public class ParseRuleRepository : IParseRuleRepository
             ? Task.FromResult<ParseRule?>(null)
             : _context.ParseRule.Where(x => x.Id == target.ParseRuleId).FirstOrDefaultAsync();
     }
+
+    /// <inheritdoc />
+    public async Task DeleteParseRuleByName(string name)
+    {
+        ParseRule? rule = _context.ParseRule.FirstOrDefault(r => r.Name == name);
+        if (rule == null)
+        {
+            return;
+        }
+
+        _context.ParseRule.Remove(rule);
+        await _context.SaveChangesAsync();
+    }
 }

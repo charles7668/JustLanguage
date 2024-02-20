@@ -53,4 +53,11 @@ public interface IParseRuleRepository
     /// <param name="url"></param>
     /// <returns></returns>
     public Task<ParseRule?> GetParseRuleBySupportDomain(string url);
+
+    /// <summary>
+    /// delete parse rule by name
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    Task DeleteParseRuleByName(string name);
 }

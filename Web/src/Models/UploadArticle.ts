@@ -1,9 +1,9 @@
 class UploadArticle {
-    articleUrl: string;
+  articleUrl: string
 
-    constructor(articleUrl: string) {
-        this.articleUrl = articleUrl;
-    }
+  constructor(articleUrl: string) {
+    this.articleUrl = articleUrl
+  }
 }
 
-export {UploadArticle};
+export { UploadArticle }

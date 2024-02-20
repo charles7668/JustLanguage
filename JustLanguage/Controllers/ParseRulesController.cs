@@ -68,4 +68,12 @@ public class ParseRulesController : Controller
 
         return Ok();
     }
+
+    [HttpDelete("{name}")]
+    public async Task<ActionResult> DeleteParseRule(string name)
+    {
+        await _parseRuleRepository.DeleteParseRuleByName(name);
+
+        return Ok();
+    }
 }

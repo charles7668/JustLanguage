@@ -3,7 +3,13 @@ import { onMounted, reactive, ref } from 'vue'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { ParseRule, SupportDomain } from '@/Models/ParseRule'
-import { postParseRules, getParseRuleNames, getParseRuleByName, updateParseRule } from '@/Api/Api'
+import {
+  postParseRules,
+  getParseRuleNames,
+  getParseRuleByName,
+  updateParseRule,
+  deleteParseRule
+} from '@/Api/Api'
 
 onMounted(async () => {
   let response = await getParseRuleNames()
@@ -22,6 +28,7 @@ const submitButtonText = ref('Add')
 const ruleNames = ref<string[]>([])
 const selectedItem = ref('')
 const ruleNameReadonly = ref(false)
+const deleteButtonVisible = ref(false)
 
 const initialState = {
   ruleName: '',
@@ -75,7 +82,23 @@ const clickAdd = async () => {
     )
     return
   }
-  props.CloseAction()
+  window.alert('success')
+}
+
+const clickDelete = async () => {
+  if (!window.confirm('Are you sure to delete ' + selectedItem.value + ' ?')) {
+    return
+  }
+  let response = await deleteParseRule(selectedItem.value)
+  if (response.status !== 200) {
+    window.alert(
+      'error : ' + response.status + ' ' + response.statusText + '\n' + (await response.text())
+    )
+    return
+  }
+  ruleNames.value.splice(ruleNames.value.indexOf(selectedItem.value), 1)
+  selectedItem.value = ''
+  await selectionChange()
 }
 
 const selectionChange = async () => {
@@ -83,6 +106,7 @@ const selectionChange = async () => {
   if (name === '') {
     submitButtonText.value = 'Add'
     ruleNameReadonly.value = false
+    deleteButtonVisible.value = false
     return
   }
   let response = await getParseRuleByName(name)
@@ -103,6 +127,7 @@ const selectionChange = async () => {
   state.getArticleXPath = ruleObject.getArticleXPath
   submitButtonText.value = 'Update'
   ruleNameReadonly.value = true
+  deleteButtonVisible.value = true
 }
 </script>
 
@@ -194,9 +219,21 @@ const selectionChange = async () => {
         @blur="v$.getArticleXPath.$touch"
       >
       </v-text-field>
-      <v-row justify="center">
-        <v-btn @click="clickAdd" :text="submitButtonText"></v-btn>
-        <v-btn @click="props.CloseAction"> close</v-btn>
+      <v-row>
+        <v-col>
+          <v-row>
+            <v-btn v-if="deleteButtonVisible" class="ml-3" @click="clickDelete" color="red"
+              >delete</v-btn
+            >
+          </v-row>
+        </v-col>
+        <v-col>
+          <v-row justify="center">
+            <v-btn @click="clickAdd" :text="submitButtonText" color="primary" class="mx-3"></v-btn>
+            <v-btn @click="props.CloseAction" color="primary" class="mx-3"> close</v-btn>
+          </v-row>
+        </v-col>
+        <v-col></v-col>
       </v-row>
     </form>
   </v-card>
