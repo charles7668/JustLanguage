@@ -46,4 +46,11 @@ public interface IParseRuleRepository
     /// <param name="newRule"></param>
     /// <returns></returns>
     public Task<bool> UpdateParseRuleByName(string name, ParseRuleDTO newRule);
+
+    /// <summary>
+    /// get parse rule by support domain
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    public Task<ParseRule?> GetParseRuleBySupportDomain(string url);
 }

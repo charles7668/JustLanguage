@@ -72,4 +72,25 @@ public class ParseRuleRepository : IParseRuleRepository
         await _context.SaveChangesAsync();
         return true;
     }
+
+    /// <inheritdoc />
+    public Task<ParseRule?> GetParseRuleBySupportDomain(string url)
+    {
+        var uri = new Uri(url);
+        string host = uri.Host;
+        IOrderedQueryable<SupportDomain> domainsList = _context.SupportDomain
+            .Where(x => EF.Functions.Like(x.Domain, $"{host}%"))
+            .OrderByDescending(x => x.Domain.Length);
+        if (!domainsList.Any())
+        {
+            return Task.FromResult<ParseRule?>(null);
+        }
+
+        int startIndex = url.IndexOf(host, StringComparison.Ordinal);
+        string removeProtocol = url.Substring(startIndex, url.Length - startIndex);
+        SupportDomain? target = domainsList.FirstOrDefault(x => removeProtocol.StartsWith(x.Domain));
+        return target == null
+            ? Task.FromResult<ParseRule?>(null)
+            : _context.ParseRule.Where(x => x.Id == target.ParseRuleId).FirstOrDefaultAsync();
+    }
 }
