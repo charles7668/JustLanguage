@@ -1,10 +1,11 @@
-﻿using JustLanguage.DataBase;
+﻿using System.Reflection;
+using JustLanguage.Constants;
+using JustLanguage.DataBase;
 using JustLanguage.Entities;
 using JustLanguage.Interfaces;
 using JustLanguage.Models;
 using JustLanguage.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace JustLanguage.Extensions;
 
@@ -22,7 +23,7 @@ public static class ServiceExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // default http client , this simulate a firefox browser
-        services.AddHttpClient(Constants.HttpClientConstants.DEFAULT_HTTP_CLIENT_NAME, client =>
+        services.AddHttpClient(HttpClientConstants.DEFAULT_HTTP_CLIENT_NAME, client =>
         {
             client.Timeout = TimeSpan.FromSeconds(5);
             client.DefaultRequestHeaders.Add("User-Agent",
