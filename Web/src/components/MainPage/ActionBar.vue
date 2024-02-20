@@ -14,7 +14,7 @@ const closeDialog = () => {
     <v-app-bar app color="cyan">
       <v-row justify="center">
         <v-btn variant="outlined"
-          >UPLOAD
+          >MANAGE RULES
           <v-dialog v-model="dialog" activator="parent" width="1000px" persistent>
             <UploadParseRule :CloseAction="closeDialog" />
           </v-dialog>
