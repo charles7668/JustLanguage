@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import UploadParseRule from '../Inputs/UploadParseRule.vue'
+import UploadParseRule from '../Inputs/ManageParseRules.vue'
 
 let dialog = ref(false)
 
