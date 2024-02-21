@@ -33,10 +33,21 @@ public class ArticleInfoRepository : IArticleInfoRepository
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<ArticleInfoDTO>> GetArticles(int offset = 0, int limit = 20)
+    public async Task<IEnumerable<ArticleInfoDTO>> GetArticles(int offset = 0, int limit = 20, bool isDescending = true)
     {
-        List<ArticleInfoDTO> articleInfoDtoList = await _context.ArticleInfo.Skip(offset).Take(limit)
-            .Select(info => _mapper.Map<ArticleInfoDTO>(info)).ToListAsync();
+        List<ArticleInfoDTO> articleInfoDtoList;
+        if (isDescending)
+        {
+            articleInfoDtoList = await _context.ArticleInfo.OrderByDescending(x => x.UploadTime)
+                .Skip(offset).Take(limit)
+                .Select(info => _mapper.Map<ArticleInfoDTO>(info)).ToListAsync();
+        }
+        else
+        {
+            articleInfoDtoList = await _context.ArticleInfo.Skip(offset).Take(limit)
+                .Select(info => _mapper.Map<ArticleInfoDTO>(info)).ToListAsync();
+        }
+
         return articleInfoDtoList;
     }
 

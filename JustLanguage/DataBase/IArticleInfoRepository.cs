@@ -16,8 +16,9 @@ public interface IArticleInfoRepository
     /// </summary>
     /// <param name="offset">offset to get articles</param>
     /// <param name="limit">limit of articles count</param>
+    /// <param name="isDescending"></param>
     /// <returns></returns>
-    Task<IEnumerable<ArticleInfoDTO>> GetArticles(int offset = 0, int limit = 20);
+    Task<IEnumerable<ArticleInfoDTO>> GetArticles(int offset = 0, int limit = 20, bool isDescending = true);
 
     /// <summary>
     /// check if the article is duplicate or not
