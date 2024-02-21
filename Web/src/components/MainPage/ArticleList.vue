@@ -1,40 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import ArticleCard from '@/components/MainPage/ArticleCard.vue'
-import { getArticles } from '@/Api/Api'
-
-const items = ref<
-  Array<{
+defineProps({
+  items: Array<{
     title: string
     coverUrl: string
     brief: string
   }>
->([])
-
-onMounted(async () => {
-  let temp = []
-  let response: Response
-  try {
-    response = await getArticles()
-  } catch (e) {
-    console.log('Failed to get articles : ' + e)
-    return
-  }
-  if (response.status !== 200) {
-    console.log('Failed to get articles : ' + response.status)
-    return
-  }
-  let data = await response.json()
-  console.log(data)
-  for (let i = 0; i < data.length; i++) {
-    temp.push({
-      title: data[i].title,
-      coverUrl: data[i].coverImageBase64,
-      brief: data[i].content
-    })
-  }
-  items.value = temp
-  console.log(items.value)
 })
 </script>
 

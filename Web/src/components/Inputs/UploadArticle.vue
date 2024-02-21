@@ -4,6 +4,8 @@ import { reactive } from 'vue'
 import { required, url } from '@vuelidate/validators'
 import { postArticle } from '@/Api/Api'
 
+const emit = defineEmits(['update-list'])
+
 const props = defineProps({
   CloseAction: {
     type: Function,
@@ -38,7 +40,7 @@ const uploadAction = async () => {
     window.alert('Error uploading article : ' + (await response.text()))
     return
   }
-  console.log('Article uploaded : ' + (await response.text()))
+  emit('update-list')
   props.CloseAction()
 }
 </script>

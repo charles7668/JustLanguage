@@ -27,7 +27,10 @@ const closeUploadArticleDialog = () => {
       <v-btn variant="outlined">
         UPLOAD ARTICLE
         <v-dialog v-model="uploadArticleDialog" activator="parent" width="auto" persistent>
-          <UploadArticle :CloseAction="closeUploadArticleDialog"></UploadArticle>
+          <UploadArticle
+            @update-list="$emit('update-list')"
+            :CloseAction="closeUploadArticleDialog"
+          ></UploadArticle>
         </v-dialog>
       </v-btn>
     </v-row>
