@@ -10,5 +10,6 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<ParseRule, ParseRuleDTO>().ReverseMap();
         CreateMap<SupportDomain, SupportDomainDTO>().ReverseMap();
+        CreateMap<ArticleInfo, ArticleInfoDTO>().ReverseMap();
     }
 }

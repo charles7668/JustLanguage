@@ -10,6 +10,7 @@ public class AppDbContext : DbContext
 
     public DbSet<ParseRule> ParseRule { get; set; } = null!;
     public DbSet<SupportDomain> SupportDomain { get; set; } = null!;
+    public DbSet<ArticleInfo> ArticleInfo { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
