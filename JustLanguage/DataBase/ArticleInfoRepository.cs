@@ -30,4 +30,12 @@ public class ArticleInfoRepository : IArticleInfoRepository
         await _context.SaveChangesAsync();
         return true;
     }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<ArticleInfoDTO>> GetArticles(int offset = 0, int limit = 20)
+    {
+        List<ArticleInfoDTO> articleInfoDtoList = await _context.ArticleInfo.Skip(offset).Take(limit)
+            .Select(info => _mapper.Map<ArticleInfoDTO>(info)).ToListAsync();
+        return articleInfoDtoList;
+    }
 }

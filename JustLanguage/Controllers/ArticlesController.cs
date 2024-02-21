@@ -117,4 +117,11 @@ public class ArticlesController : Controller
             return extractFunction(targetNode);
         }
     }
+
+    [HttpGet(Name = "{page}")]
+    public async Task<ActionResult<IEnumerable<ArticleInfoDTO>>> GetArticles([FromQuery] int page = 0)
+    {
+        IEnumerable<ArticleInfoDTO> articleDtoList = await _articleInfoRepository.GetArticles(page);
+        return Ok(articleDtoList);
+    }
 }
