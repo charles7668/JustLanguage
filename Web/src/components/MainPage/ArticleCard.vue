@@ -8,17 +8,20 @@ const props = defineProps({
 
 <template>
   <v-container style="display: flex; flex-direction: row">
-    <v-img
-      alt="test"
-      src="https://cdn-icons-png.flaticon.com/512/1040/1040243.png"
-      width="150px"
-      height="150px"
-    />
-    <v-container style="display: flex; flex-direction: column">
+    <v-img alt="test" :src="props.coverUrl" width="150px" height="150px" />
+    <v-container
+      style="display: flex; flex-direction: column; max-height: 150px"
+      id="article-container"
+    >
       <h3>{{ props.title }}</h3>
       <p>{{ props.brief }}</p>
     </v-container>
   </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+#article-container p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

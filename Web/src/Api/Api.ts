@@ -47,11 +47,16 @@ const deleteParseRule = async (name: string) => {
   })
 }
 
+const getArticles = async (page = 0) => {
+  return await fetch(apiUrl + '/api/Articles?page=' + page)
+}
+
 export {
   postParseRules,
   getParseRuleNames,
   getParseRuleByName,
   updateParseRule,
   postArticle,
-  deleteParseRule
+  deleteParseRule,
+  getArticles
 }
