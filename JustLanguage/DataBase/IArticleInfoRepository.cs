@@ -26,4 +26,11 @@ public interface IArticleInfoRepository
     /// <param name="uploadArticleDto"></param>
     /// <returns></returns>
     Task<bool> HasDuplicateArticle(UploadArticleDTO uploadArticleDto);
+
+    /// <summary>
+    /// get article by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task<ArticleInfoDTO?> GetArticle(int id);
 }

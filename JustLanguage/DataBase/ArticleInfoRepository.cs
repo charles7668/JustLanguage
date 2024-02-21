@@ -56,4 +56,11 @@ public class ArticleInfoRepository : IArticleInfoRepository
     {
         return _context.ArticleInfo.AnyAsync(x => x.SrcUrl == uploadArticleDto.ArticleUrl);
     }
+
+    /// <inheritdoc />
+    public Task<ArticleInfoDTO?> GetArticle(int id)
+    {
+        return _context.ArticleInfo.Where(x => x.Id == id).Select(info => _mapper.Map<ArticleInfoDTO>(info))
+            .FirstOrDefaultAsync();
+    }
 }

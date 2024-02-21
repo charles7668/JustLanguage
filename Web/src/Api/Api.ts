@@ -51,6 +51,10 @@ const getArticles = async (page = 0) => {
   return await fetch(apiUrl + '/api/Articles?page=' + page)
 }
 
+const getArticleByIdApi = async (id: number) => {
+  return await fetch(apiUrl + '/api/Articles/' + id)
+}
+
 export {
   postParseRules,
   getParseRuleNames,
@@ -58,5 +62,6 @@ export {
   updateParseRule,
   postArticle,
   deleteParseRule,
-  getArticles
+  getArticles,
+  getArticleByIdApi
 }

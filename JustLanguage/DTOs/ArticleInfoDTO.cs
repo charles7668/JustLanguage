@@ -1,6 +1,6 @@
 ﻿namespace JustLanguage.DTOs;
 
-public record ArticleInfoDTO
+public class ArticleInfoDTO
 {
     /// <summary>
     /// id of the article

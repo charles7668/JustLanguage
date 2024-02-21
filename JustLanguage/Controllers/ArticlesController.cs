@@ -127,10 +127,22 @@ public class ArticlesController : Controller
         }
     }
 
-    [HttpGet(Name = "{page}")]
+    [HttpGet]
     public async Task<ActionResult<IEnumerable<ArticleInfoDTO>>> GetArticles([FromQuery] int page = 0)
     {
         IEnumerable<ArticleInfoDTO> articleDtoList = await _articleInfoRepository.GetArticles(page);
         return Ok(articleDtoList);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ArticleInfoDTO>> GetArticle(int id)
+    {
+        ArticleInfoDTO? articleDto = await _articleInfoRepository.GetArticle(id);
+        if (articleDto == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(articleDto);
     }
 }
