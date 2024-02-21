@@ -134,48 +134,102 @@ const updateRuleNames = async () => {
   let body = JSON.parse(await response.text())
   ruleNames.value = [''].concat(body)
 }
-
 </script>
 
 <template>
   <v-card height="500px">
-    <v-select v-model="selectedItem" label="Select Rule" :items="ruleNames" bg-color="gray"
-      v-on:update:modelValue="selectionChange">
+    <v-select
+      v-model="selectedItem"
+      label="Select Rule"
+      :items="ruleNames"
+      bg-color="gray"
+      v-on:update:modelValue="selectionChange"
+    >
     </v-select>
     <form>
-      <v-text-field :readonly="ruleNameReadonly" v-model="state.ruleName" :error-messages="v$.ruleName.$errors.map((e) =>
-        typeof e.$message === 'string' ? e.$message : e.$message.value
-      )
-        " label="RuleName" required @input="v$.ruleName.$touch" @blur="v$.ruleName.$touch"></v-text-field>
-      <v-text-field v-model="state.allowDomain" :error-messages="v$.allowDomain.$errors.map((e) =>
-        typeof e.$message === 'string' ? e.$message : e.$message.value
-      )
-        " label="Domains(split by ',')" required @input="v$.allowDomain.$touch" @blur="v$.allowDomain.$touch">
+      <v-text-field
+        :readonly="ruleNameReadonly"
+        v-model="state.ruleName"
+        :error-messages="
+          v$.ruleName.$errors.map((e) =>
+            typeof e.$message === 'string' ? e.$message : e.$message.value
+          )
+        "
+        label="RuleName"
+        required
+        @input="v$.ruleName.$touch"
+        @blur="v$.ruleName.$touch"
+      ></v-text-field>
+      <v-text-field
+        v-model="state.allowDomain"
+        :error-messages="
+          v$.allowDomain.$errors.map((e) =>
+            typeof e.$message === 'string' ? e.$message : e.$message.value
+          )
+        "
+        label="Domains(split by ',')"
+        required
+        @input="v$.allowDomain.$touch"
+        @blur="v$.allowDomain.$touch"
+      >
       </v-text-field>
-      <v-text-field v-model="state.getCoverXPath" :error-messages="v$.getCoverXPath.$errors.map((e) =>
-        typeof e.$message === 'string' ? e.$message : e.$message.value
-      )
-        " label="XPath for cover image" @input="v$.getCoverXPath.$touch" @blur="v$.getCoverXPath.$touch">
+      <v-text-field
+        v-model="state.getCoverXPath"
+        :error-messages="
+          v$.getCoverXPath.$errors.map((e) =>
+            typeof e.$message === 'string' ? e.$message : e.$message.value
+          )
+        "
+        label="XPath for cover image"
+        @input="v$.getCoverXPath.$touch"
+        @blur="v$.getCoverXPath.$touch"
+      >
       </v-text-field>
-      <v-text-field v-model="state.getAuthorXPath" :error-messages="v$.getAuthorXPath.$errors.map((e) =>
-        typeof e.$message === 'string' ? e.$message : e.$message.value
-      )
-        " label="XPath for author" required @input="v$.getAuthorXPath.$touch" @blur="v$.getAuthorXPath.$touch">
+      <v-text-field
+        v-model="state.getAuthorXPath"
+        :error-messages="
+          v$.getAuthorXPath.$errors.map((e) =>
+            typeof e.$message === 'string' ? e.$message : e.$message.value
+          )
+        "
+        label="XPath for author"
+        required
+        @input="v$.getAuthorXPath.$touch"
+        @blur="v$.getAuthorXPath.$touch"
+      >
       </v-text-field>
-      <v-text-field v-model="state.getTitleXPath" :error-messages="v$.getTitleXPath.$errors.map((e) =>
-        typeof e.$message === 'string' ? e.$message : e.$message.value
-      )
-        " label="XPath for title" required @input="v$.getTitleXPath.$touch" @blur="v$.getTitleXPath.$touch">
+      <v-text-field
+        v-model="state.getTitleXPath"
+        :error-messages="
+          v$.getTitleXPath.$errors.map((e) =>
+            typeof e.$message === 'string' ? e.$message : e.$message.value
+          )
+        "
+        label="XPath for title"
+        required
+        @input="v$.getTitleXPath.$touch"
+        @blur="v$.getTitleXPath.$touch"
+      >
       </v-text-field>
-      <v-text-field v-model="state.getArticleXPath" :error-messages="v$.getArticleXPath.$errors.map((e) =>
-        typeof e.$message === 'string' ? e.$message : e.$message.value
-      )
-        " label="XPath for article" required @input="v$.getArticleXPath.$touch" @blur="v$.getArticleXPath.$touch">
+      <v-text-field
+        v-model="state.getArticleXPath"
+        :error-messages="
+          v$.getArticleXPath.$errors.map((e) =>
+            typeof e.$message === 'string' ? e.$message : e.$message.value
+          )
+        "
+        label="XPath for article"
+        required
+        @input="v$.getArticleXPath.$touch"
+        @blur="v$.getArticleXPath.$touch"
+      >
       </v-text-field>
       <v-row>
         <v-col>
           <v-row>
-            <v-btn v-if="deleteButtonVisible" class="ml-3" @click="clickDelete" color="red">delete</v-btn>
+            <v-btn v-if="deleteButtonVisible" class="ml-3" @click="clickDelete" color="red"
+              >delete</v-btn
+            >
           </v-row>
         </v-col>
         <v-col>

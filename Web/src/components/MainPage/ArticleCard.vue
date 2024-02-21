@@ -1,20 +1,25 @@
 <script setup lang="ts">
-const props = defineProps({
-  title: String,
-  coverUrl: String,
-  brief: String
+import { ArticleInfo } from '@/Models/ArticleInfo'
+
+defineProps({
+  item: {
+    type: Object,
+    default() {
+      return new ArticleInfo()
+    }
+  }
 })
 </script>
 
 <template>
   <v-container style="display: flex; flex-direction: row">
-    <v-img alt="test" :src="props.coverUrl" width="150px" height="150px" />
+    <v-img alt="test" :src="item.coverImageBase64" width="150px" height="150px" />
     <v-container
       style="display: flex; flex-direction: column; max-height: 150px"
       id="article-container"
     >
-      <h3>{{ props.title }}</h3>
-      <p>{{ props.brief }}</p>
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.content }}</p>
     </v-container>
   </v-container>
 </template>

@@ -3,6 +3,11 @@
 public record ArticleInfoDTO
 {
     /// <summary>
+    /// id of the article
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// article title
     /// </summary>
     public string Title { get; set; } = string.Empty;

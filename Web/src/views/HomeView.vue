@@ -3,20 +3,14 @@ import { getArticles } from '@/Api/Api'
 import { ref, onMounted } from 'vue'
 import ActionBar from '@/components/MainPage/ActionBar.vue'
 import ArticleList from '@/components/MainPage/ArticleList.vue'
-const articles = ref<
-  Array<{
-    title: string
-    coverUrl: string
-    brief: string
-  }>
->([])
+import type { ArticleInfo } from '@/Models/ArticleInfo'
+const articles = ref<Array<ArticleInfo>>([])
 
 onMounted(async () => {
   await updateArticles()
 })
 
 const updateArticles = async () => {
-  let temp = []
   let response: Response
   try {
     response = await getArticles()
@@ -29,15 +23,7 @@ const updateArticles = async () => {
     return
   }
   let data = await response.json()
-  console.log(data)
-  for (let i = 0; i < data.length; i++) {
-    temp.push({
-      title: data[i].title,
-      coverUrl: data[i].coverImageBase64,
-      brief: data[i].content
-    })
-  }
-  articles.value = temp
+  articles.value = data
 }
 
 const updateListEvent = async () => {
