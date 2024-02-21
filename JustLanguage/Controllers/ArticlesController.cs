@@ -45,7 +45,11 @@ public class ArticlesController : Controller
         var document = new HtmlDocument();
         document.LoadHtml(response);
         HtmlNode? node = document.DocumentNode;
-        var articleInfoDto = new ArticleInfoDTO();
+        var originUri = new Uri(dto.ArticleUrl);
+        var articleInfoDto = new ArticleInfoDTO
+        {
+            SrcUrl = originUri.AbsoluteUri
+        };
         if (node == null)
         {
             return Ok(articleInfoDto);
@@ -83,7 +87,6 @@ public class ArticlesController : Controller
                 return "";
             }
 
-            var originUri = new Uri(dto.ArticleUrl);
             bool isAbsoluteUri = Uri.TryCreate(src, UriKind.Absolute, out Uri? srcUri);
             if (isAbsoluteUri)
             {

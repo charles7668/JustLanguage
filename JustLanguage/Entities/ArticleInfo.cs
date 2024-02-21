@@ -26,4 +26,9 @@ public class ArticleInfo
     /// article author
     /// </summary>
     public string Author { get; set; } = string.Empty;
+
+    /// <summary>
+    /// source url
+    /// </summary>
+    public string SrcUrl { get; set; } = string.Empty;
 }
