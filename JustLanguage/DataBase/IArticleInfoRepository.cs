@@ -18,4 +18,11 @@ public interface IArticleInfoRepository
     /// <param name="limit">limit of articles count</param>
     /// <returns></returns>
     Task<IEnumerable<ArticleInfoDTO>> GetArticles(int offset = 0, int limit = 20);
+
+    /// <summary>
+    /// check if the article is duplicate or not
+    /// </summary>
+    /// <param name="uploadArticleDto"></param>
+    /// <returns></returns>
+    Task<bool> HasDuplicateArticle(UploadArticleDTO uploadArticleDto);
 }

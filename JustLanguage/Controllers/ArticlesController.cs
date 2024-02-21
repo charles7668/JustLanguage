@@ -35,6 +35,12 @@ public class ArticlesController : Controller
     public async Task<ActionResult<ArticleInfoDTO>> UploadArticle([FromBody] UploadArticleDTO dto)
     {
         _logger.LogInformation("input : {@DTO}", dto);
+        bool exist = await _articleInfoRepository.HasDuplicateArticle(dto);
+        if (exist)
+        {
+            return BadRequest("article already exist");
+        }
+
         ParseRule? parseRule = await _parseRuleRepository.GetParseRuleBySupportDomain(dto.ArticleUrl);
         if (parseRule == null)
         {

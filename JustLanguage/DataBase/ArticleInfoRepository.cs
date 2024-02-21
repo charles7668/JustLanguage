@@ -38,4 +38,10 @@ public class ArticleInfoRepository : IArticleInfoRepository
             .Select(info => _mapper.Map<ArticleInfoDTO>(info)).ToListAsync();
         return articleInfoDtoList;
     }
+
+    /// <inheritdoc />
+    public Task<bool> HasDuplicateArticle(UploadArticleDTO uploadArticleDto)
+    {
+        return _context.ArticleInfo.AnyAsync(x => x.SrcUrl == uploadArticleDto.ArticleUrl);
+    }
 }
