@@ -21,6 +21,7 @@ public class ArticleInfoRepository : IArticleInfoRepository
     public async Task<bool> AddArticle(ArticleInfoDTO articleInfoDto)
     {
         var articleInfo = _mapper.Map<ArticleInfo>(articleInfoDto);
+        articleInfo.UploadTime = DateTime.Now;
         EntityEntry<ArticleInfo> result = await _context.ArticleInfo.AddAsync(articleInfo);
         if (result.State != EntityState.Added)
         {

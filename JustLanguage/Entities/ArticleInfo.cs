@@ -31,4 +31,9 @@ public class ArticleInfo
     /// source url
     /// </summary>
     public string SrcUrl { get; set; } = string.Empty;
+
+    /// <summary>
+    /// date time
+    /// </summary>
+    public DateTime UploadTime { get; set; }
 }
