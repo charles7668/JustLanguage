@@ -16,9 +16,12 @@ public class ArticlesController : Controller
     public ArticlesController(ILogger<ArticlesController> logger, IUnitOfWork unitOfWork, IHttpCrawler crawler)
     {
         _parseRuleRepository = unitOfWork.ParseRuleRepository;
+        _articleInfoRepository = unitOfWork.ArticleInfoRepository;
         _logger = logger;
         _httpCrawler = crawler;
     }
+
+    private readonly IArticleInfoRepository _articleInfoRepository;
 
     /// <summary>
     /// default http crawler
@@ -58,6 +61,12 @@ public class ArticlesController : Controller
         articleInfoDto.Content = TryToParse(articleRuleKey, ExtractInnerText);
         articleInfoDto.Author = TryToParse(authorRuleKey, ExtractInnerText);
         articleInfoDto.CoverImageBase64 = TryToParse(coverRuleKey, ExtractImageSrc);
+
+        bool state = await _articleInfoRepository.AddArticle(articleInfoDto);
+        if (!state)
+        {
+            return BadRequest("add article to database failed");
+        }
 
         return Ok(articleInfoDto);
 
