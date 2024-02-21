@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import {onMounted, ref, computed} from 'vue'
 import router from '@/router'
 import {getArticleByIdApi} from "@/Api/Api";
 import {ArticleInfo} from "@/Models/ArticleInfo";
@@ -26,6 +26,7 @@ onMounted(async () => {
   console.log(info.value.title)
 })
 
+
 const gotoHome = () => {
   router.push({name: 'home'})
 }
@@ -48,7 +49,7 @@ const gotoHome = () => {
           <v-img :src="info.coverImageBase64" max-width="500px"></v-img>
         </v-row>
         <v-row justify="center">
-          <p style="max-width: 800px">{{ info.content }}</p>
+          <v-container v-dompurify-html="info.content" style="max-width: 800px"></v-container>
         </v-row>
       </v-container>
     </v-main>

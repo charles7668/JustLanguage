@@ -68,7 +68,7 @@ public class ArticlesController : Controller
         string articleRuleKey = ParseRuleConstants.DEFAULT_PARSE_ARTICLE_XPATH;
         string authorRuleKey = ParseRuleConstants.DEFAULT_PARSE_AUTHOR_XPATH;
         articleInfoDto.Title = TryToParse(titleRuleKey, ExtractInnerText);
-        articleInfoDto.Content = TryToParse(articleRuleKey, ExtractInnerText);
+        articleInfoDto.Content = TryToParse(articleRuleKey, ExtractContent);
         articleInfoDto.Author = TryToParse(authorRuleKey, ExtractInnerText);
         articleInfoDto.CoverImageBase64 = TryToParse(coverRuleKey, ExtractImageSrc);
 
@@ -83,6 +83,11 @@ public class ArticlesController : Controller
         string ExtractInnerText(HtmlNode? targetNode)
         {
             return targetNode != null ? targetNode.InnerText : "";
+        }
+
+        string ExtractContent(HtmlNode? targetNode)
+        {
+            return targetNode != null ? targetNode.InnerHtml : "";
         }
 
         string ExtractImageSrc(HtmlNode? targetNode)
