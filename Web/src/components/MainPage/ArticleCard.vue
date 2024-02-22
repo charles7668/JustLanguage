@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import { ArticleInfo } from '@/Models/ArticleInfo';
+import { ArticleInfo } from '@/Models/ArticleInfo'
 
 defineProps({
   item: {
@@ -12,19 +12,21 @@ defineProps({
 })
 
 const getBriefText = (htmlText: string) => {
-  const div = document.createElement("div")
+  const div = document.createElement('div')
   div.innerHTML = htmlText
   return div.innerText
 }
-
 </script>
 
 <template>
   <v-container style="display: flex; flex-direction: row">
     <v-img alt="test" :src="item.coverImageBase64" width="150px" height="150px" />
-    <v-container style="display: flex; flex-direction: column; max-height: 150px" id="article-container">
+    <v-container
+      style="display: flex; flex-direction: column; max-height: 150px"
+      id="article-container"
+    >
       <h3>{{ item.title }}</h3>
-      <p>{{ getBriefText(item.content)}}</p>
+      <p>{{ getBriefText(item.content) }}</p>
     </v-container>
   </v-container>
 </template>

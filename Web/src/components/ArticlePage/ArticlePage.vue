@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {onMounted, ref, computed} from 'vue'
+import { onMounted, ref } from 'vue'
 import router from '@/router'
-import {getArticleByIdApi} from "@/Api/Api";
-import {ArticleInfo} from "@/Models/ArticleInfo";
+import { getArticleByIdApi } from '@/Api/Api'
+import { ArticleInfo } from '@/Models/ArticleInfo'
 
 let info = ref<ArticleInfo>(new ArticleInfo())
 
@@ -12,13 +12,13 @@ onMounted(async () => {
   try {
     response = await getArticleByIdApi(articleId)
   } catch (e) {
-    window.alert("Error: " + e)
-    router.push({name: 'home'})
+    window.alert('Error: ' + e)
+    router.push({ name: 'home' })
     return
   }
   if (response.status !== 200) {
-    window.alert("Error: " + response.status)
-    router.push({name: 'home'})
+    window.alert('Error: ' + response.status)
+    router.push({ name: 'home' })
     return
   }
   const data = await response.json()
@@ -26,11 +26,9 @@ onMounted(async () => {
   console.log(info.value.title)
 })
 
-
 const gotoHome = () => {
-  router.push({name: 'home'})
+  router.push({ name: 'home' })
 }
-
 </script>
 
 <template>
