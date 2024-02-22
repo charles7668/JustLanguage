@@ -3,8 +3,13 @@ import { onMounted, ref } from 'vue'
 import router from '@/router'
 import { getArticleByIdApi } from '@/Api/Api'
 import { ArticleInfo } from '@/Models/ArticleInfo'
+import type { VContainer, VMain } from 'vuetify/components'
 
-let info = ref<ArticleInfo>(new ArticleInfo())
+const info = ref<ArticleInfo>(new ArticleInfo())
+const selectionTools = ref<InstanceType<typeof VContainer>>()
+const selectionToolsLeft = ref(0)
+const selectionToolsTop = ref(0)
+const selectionToolsVisible = ref(false)
 
 onMounted(async () => {
   const articleId = Number(router.currentRoute.value.params.articleId)
@@ -29,6 +34,21 @@ onMounted(async () => {
 const gotoHome = () => {
   router.push({ name: 'home' })
 }
+
+const mouseClick = () => {
+  let selection = window.getSelection()
+  if (selection === null || selection?.toString() === '') {
+    selectionToolsVisible.value = false
+    return
+  }
+  // get selection position
+  let range = selection.getRangeAt(0)
+  let rect = range.getBoundingClientRect()
+  selectionToolsLeft.value = rect.x
+  selectionToolsTop.value =
+    rect.y + document.documentElement.scrollTop - selectionTools.value?.$el.clientHeight
+  selectionToolsVisible.value = true
+}
 </script>
 
 <template>
@@ -38,7 +58,19 @@ const gotoHome = () => {
         <v-btn variant="outlined" @click="gotoHome">Home</v-btn>
       </v-row>
     </v-app-bar>
-    <v-main>
+    <v-main @click="mouseClick">
+      <v-container
+        ref="selectionTools"
+        id="selection-tools"
+        :style="{
+          position: 'absolute',
+          left: `${selectionToolsLeft}px`,
+          top: `${selectionToolsTop}px`,
+          visibility: selectionToolsVisible ? 'visible' : 'hidden'
+        }"
+      >
+        <v-btn @click="mouseClick">Click me</v-btn>
+      </v-container>
       <v-container class="d-flex flex-column justify-center">
         <v-row justify="center">
           <h1>{{ info.title }}</h1>
