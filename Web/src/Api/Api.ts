@@ -55,6 +55,16 @@ const getArticleByIdApi = async (id: number) => {
   return await fetch(apiUrl + '/api/Articles/' + id)
 }
 
+export const getTranslateResultApi = async (query: any) => {
+  return await fetch(apiUrl + '/api/Translates', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(query)
+  })
+}
+
 export {
   postParseRules,
   getParseRuleNames,

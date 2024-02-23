@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import router from '@/router'
-import { getArticleByIdApi } from '@/Api/Api'
+import { getArticleByIdApi, getTranslateResultApi } from '@/Api/Api'
 import { ArticleInfo } from '@/Models/ArticleInfo'
 import type { VContainer, VMain } from 'vuetify/components'
 
@@ -10,6 +10,8 @@ const selectionTools = ref<InstanceType<typeof VContainer>>()
 const selectionToolsLeft = ref(0)
 const selectionToolsTop = ref(0)
 const selectionToolsVisible = ref(false)
+const translateText = ref('')
+const translateShow = ref(false)
 
 onMounted(async () => {
   const articleId = Number(router.currentRoute.value.params.articleId)
@@ -39,6 +41,7 @@ const mouseClick = () => {
   let selection = window.getSelection()
   if (selection === null || selection?.toString() === '') {
     selectionToolsVisible.value = false
+    translateText.value = ''
     return
   }
   // get selection position
@@ -48,6 +51,29 @@ const mouseClick = () => {
   selectionToolsTop.value =
     rect.y + document.documentElement.scrollTop - selectionTools.value?.$el.clientHeight
   selectionToolsVisible.value = true
+}
+
+const tryTranslate = async () => {
+  let selection = window.getSelection()
+  // if exist translate text, do nothing , this will reduce server request
+  if (translateText.value !== '') return
+  let response = await getTranslateResultApi({
+    translateProvider: 'google',
+    query: JSON.stringify({
+      client: 'gtx',
+      sl: 'auto',
+      tl: 'zh-TW',
+      hl: 'zh-TW',
+      ie: 'UTF-8',
+      oe: 'UTF-8',
+      otf: '1',
+      ssel: '0',
+      tsel: '0',
+      kc: '7',
+      q: selection?.toString()
+    })
+  })
+  translateText.value = await response.text()
 }
 </script>
 
@@ -69,7 +95,19 @@ const mouseClick = () => {
           visibility: selectionToolsVisible ? 'visible' : 'hidden'
         }"
       >
-        <v-btn @click="mouseClick">Click me</v-btn>
+        <v-tooltip
+          v-model="translateShow"
+          location="top"
+          max-width="500px"
+          :style="{
+            visibility: translateText === '' ? 'hidden' : 'visible'
+          }"
+        >
+          <template v-slot:activator="{ props }">
+            <v-btn @click="tryTranslate" v-bind="props">Translate</v-btn>
+          </template>
+          <span>{{ translateText }}</span>
+        </v-tooltip>
       </v-container>
       <v-container class="d-flex flex-column justify-center">
         <v-row justify="center">
