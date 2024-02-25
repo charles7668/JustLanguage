@@ -75,6 +75,13 @@ const tryTranslate = async () => {
   })
   translateText.value = await response.text()
 }
+
+const textToSpeech = () => {
+  let selection = window.getSelection()
+  if (selection === null || selection?.toString() === '') return
+  let utterance = new SpeechSynthesisUtterance(selection.toString())
+  speechSynthesis.speak(utterance)
+}
 </script>
 
 <template>
@@ -104,10 +111,11 @@ const tryTranslate = async () => {
           }"
         >
           <template v-slot:activator="{ props }">
-            <v-btn @click="tryTranslate" v-bind="props">Translate</v-btn>
+            <v-btn @click="tryTranslate" v-bind="props" color="primary">Translate</v-btn>
           </template>
           <span>{{ translateText }}</span>
         </v-tooltip>
+        <v-btn icon="mdi-headphones" color="primary" @click="textToSpeech"> </v-btn>
       </v-container>
       <v-container class="d-flex flex-column justify-center">
         <v-row justify="center">
