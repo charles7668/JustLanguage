@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using HtmlAgilityPack;
 using JustLanguage.Constants;
 using JustLanguage.DataBase;
@@ -82,7 +83,7 @@ public class ArticlesController : Controller
 
         string ExtractFirstInnerText(HtmlNodeCollection? targetNode)
         {
-            return targetNode?.Count > 0 ? targetNode[0].InnerText : "";
+            return targetNode?.Count > 0 ? WebUtility.HtmlDecode(targetNode[0].InnerText) : "";
         }
 
         string ExtractArticle(HtmlNodeCollection? targetNodes)
