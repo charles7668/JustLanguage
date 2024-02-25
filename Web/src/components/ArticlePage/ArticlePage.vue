@@ -124,7 +124,7 @@ const textToSpeech = () => {
         <v-row justify="center" class="ma-2">
           <v-img :src="info.coverImageBase64" max-width="500px"></v-img>
         </v-row>
-        <v-row justify="center">
+        <v-row justify="center" id="article-content">
           <v-container v-dompurify-html="info.content" style="max-width: 800px"></v-container>
         </v-row>
       </v-container>
@@ -132,4 +132,9 @@ const textToSpeech = () => {
   </v-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+#article-content ::v-deep p {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+</style>
