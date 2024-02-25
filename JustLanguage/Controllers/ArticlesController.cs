@@ -67,9 +67,9 @@ public class ArticlesController : Controller
         string coverRuleKey = ParseRuleConstants.DEFAULT_PARSE_COVER_XPATH;
         string articleRuleKey = ParseRuleConstants.DEFAULT_PARSE_ARTICLE_XPATH;
         string authorRuleKey = ParseRuleConstants.DEFAULT_PARSE_AUTHOR_XPATH;
-        articleInfoDto.Title = TryToParse(titleRuleKey, ExtractInnerText);
-        articleInfoDto.Content = TryToParse(articleRuleKey, ExtractContent);
-        articleInfoDto.Author = TryToParse(authorRuleKey, ExtractInnerText);
+        articleInfoDto.Title = TryToParse(titleRuleKey, ExtractFirstInnerText);
+        articleInfoDto.Content = TryToParse(articleRuleKey, ExtractArticle);
+        articleInfoDto.Author = TryToParse(authorRuleKey, ExtractFirstInnerText);
         articleInfoDto.CoverImageBase64 = TryToParse(coverRuleKey, ExtractImageSrc);
 
         bool state = await _articleInfoRepository.AddArticle(articleInfoDto);
@@ -80,19 +80,27 @@ public class ArticlesController : Controller
 
         return Ok(articleInfoDto);
 
-        string ExtractInnerText(HtmlNode? targetNode)
+        string ExtractFirstInnerText(HtmlNodeCollection? targetNode)
         {
-            return targetNode != null ? targetNode.InnerText : "";
+            return targetNode?.Count > 0 ? targetNode[0].InnerText : "";
         }
 
-        string ExtractContent(HtmlNode? targetNode)
+        string ExtractArticle(HtmlNodeCollection? targetNodes)
         {
-            return targetNode != null ? targetNode.InnerHtml : "";
+            var singleNode = HtmlNode.CreateNode("<div></div>");
+            if (targetNodes != null)
+                singleNode.AppendChildren(targetNodes);
+            return singleNode.InnerHtml;
         }
 
-        string ExtractImageSrc(HtmlNode? targetNode)
+        string ExtractImageSrc(HtmlNodeCollection? targetNode)
         {
-            string? src = targetNode?.Attributes["src"]?.Value;
+            if (targetNode == null || targetNode.Count == 0)
+            {
+                return "";
+            }
+
+            string? src = targetNode[0].Attributes["src"]?.Value;
             if (src == null)
             {
                 return "";
@@ -108,7 +116,7 @@ public class ArticlesController : Controller
             return completeUri.AbsoluteUri;
         }
 
-        string TryToParse(string keyName, Func<HtmlNode?, string> extractFunction)
+        string TryToParse(string keyName, Func<HtmlNodeCollection?, string> extractFunction)
         {
             _logger.LogInformation("try to parse {KeyName}", keyName);
             if (!ruleDict.TryGetValue(keyName, out string? value))
@@ -116,10 +124,10 @@ public class ArticlesController : Controller
                 return "";
             }
 
-            HtmlNode? targetNode = null;
+            HtmlNodeCollection? targetNode = null;
             try
             {
-                targetNode = node.SelectSingleNode(value);
+                targetNode = node.SelectNodes(value);
             }
             catch (Exception e)
             {
