@@ -63,4 +63,11 @@ public class ArticleInfoRepository : IArticleInfoRepository
         return _context.ArticleInfo.Where(x => x.Id == id).Select(info => _mapper.Map<ArticleInfoDTO>(info))
             .FirstOrDefaultAsync();
     }
+
+    /// <inheritdoc />
+    public async Task DeleteArticleById(int id)
+    {
+        _context.ArticleInfo.Remove(new ArticleInfo { Id = id });
+        await _context.SaveChangesAsync();
+    }
 }

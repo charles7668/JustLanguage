@@ -37,7 +37,7 @@ const updateListEvent = async () => {
     <v-navigation-drawer location="left"></v-navigation-drawer>
     <v-navigation-drawer location="right"></v-navigation-drawer>
     <v-main class="d-flex align-center justify-center">
-      <ArticleList :items="articles"></ArticleList>
+      <ArticleList :items="articles" @update-list="updateListEvent"></ArticleList>
     </v-main>
   </v-layout>
 </template>

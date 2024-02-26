@@ -33,4 +33,11 @@ public interface IArticleInfoRepository
     /// <param name="id"></param>
     /// <returns></returns>
     Task<ArticleInfoDTO?> GetArticle(int id);
+
+    /// <summary>
+    /// delete article by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Task DeleteArticleById(int id);
 }

@@ -65,6 +65,12 @@ export const getTranslateResultApi = async (query: any) => {
   })
 }
 
+export const deleteArticleByIdApi = async (id: number) => {
+  return await fetch(apiUrl + '/api/Articles/' + id, {
+    method: 'DELETE'
+  })
+}
+
 export {
   postParseRules,
   getParseRuleNames,

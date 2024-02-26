@@ -90,7 +90,10 @@ public class ArticlesController : Controller
         {
             var singleNode = HtmlNode.CreateNode("<div></div>");
             if (targetNodes != null)
+            {
                 singleNode.AppendChildren(targetNodes);
+            }
+
             return singleNode.InnerHtml;
         }
 
@@ -158,5 +161,13 @@ public class ArticlesController : Controller
         }
 
         return Ok(articleDto);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ArticleInfoDTO>> DeleteArticleById(int id)
+    {
+        await _articleInfoRepository.DeleteArticleById(id);
+
+        return Ok();
     }
 }
