@@ -40,4 +40,10 @@ public interface IArticleInfoRepository
     /// <param name="id"></param>
     /// <returns></returns>
     Task DeleteArticleById(int id);
+
+    /// <summary>
+    /// get article count
+    /// </summary>
+    /// <returns></returns>
+    Task<int> GetArticleCount();
 }

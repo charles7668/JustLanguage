@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Specialized;
+using System.Net;
 using System.Text.Json;
 using HtmlAgilityPack;
 using JustLanguage.Constants;
@@ -149,6 +150,13 @@ public class ArticlesController : Controller
     {
         IEnumerable<ArticleInfoDTO> articleDtoList = await _articleInfoRepository.GetArticles(page);
         return Ok(articleDtoList);
+    }
+
+    [HttpGet("count")]
+    public async Task<ActionResult> GetArticlesCount()
+    {
+        int count = await _articleInfoRepository.GetArticleCount();
+        return Ok(count);
     }
 
     [HttpGet("{id}")]

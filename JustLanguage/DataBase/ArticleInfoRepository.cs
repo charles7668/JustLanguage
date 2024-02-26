@@ -70,4 +70,11 @@ public class ArticleInfoRepository : IArticleInfoRepository
         _context.ArticleInfo.Remove(new ArticleInfo { Id = id });
         await _context.SaveChangesAsync();
     }
+
+    /// <inheritdoc />
+    public async Task<int> GetArticleCount()
+    {
+        int count = await _context.ArticleInfo.CountAsync();
+        return count;
+    }
 }
