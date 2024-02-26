@@ -92,31 +92,24 @@ const textToSpeech = () => {
       </v-row>
     </v-app-bar>
     <v-main @click="mouseClick">
-      <v-container
-        ref="selectionTools"
-        id="selection-tools"
-        :style="{
-          position: 'absolute',
-          left: `${selectionToolsLeft}px`,
-          top: `${selectionToolsTop}px`,
-          visibility: selectionToolsVisible ? 'visible' : 'hidden'
-        }"
-      >
-        <v-tooltip
-          v-model="translateShow"
-          location="top"
-          max-width="500px"
-          :style="{
-            visibility: translateText === '' ? 'hidden' : 'visible'
-          }"
-        >
+      <v-toolbar ref="selectionTools" id="selection-tools" density="compact" :style="{
+        maxWidth: '200px',
+        position: 'absolute',
+        left: `${selectionToolsLeft}px`,
+        top: `${selectionToolsTop}px`,
+        visibility: selectionToolsVisible ? 'visible' : 'hidden',
+        transitionDuration: '0s'
+      }">
+        <v-tooltip v-model="translateShow" location="top" max-width="500px" :style="{
+          visibility: translateText === '' ? 'hidden' : 'visible'
+        }">
           <template v-slot:activator="{ props }">
             <v-btn @click="tryTranslate" v-bind="props" color="primary">Translate</v-btn>
           </template>
           <span>{{ translateText }}</span>
         </v-tooltip>
         <v-btn icon="mdi-headphones" color="primary" @click="textToSpeech"> </v-btn>
-      </v-container>
+      </v-toolbar>
       <v-container class="d-flex flex-column justify-center">
         <v-row justify="center">
           <h1>{{ info.title }}</h1>
@@ -133,7 +126,7 @@ const textToSpeech = () => {
 </template>
 
 <style scoped>
-#article-content ::v-deep p {
+#article-content :deep(p) {
   padding-top: 10px;
   padding-bottom: 10px;
 }
