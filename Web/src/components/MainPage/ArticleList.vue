@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ArticleInfo } from '@/Models/ArticleInfo'
+import { ArticleInfo } from '@/Models/ArticleInfo'
 import ArticleCard from '@/components/MainPage/ArticleCard.vue'
 import router from '@/router'
 
 defineProps({
   items: {
-    type: Array<ArticleInfo>,
+    type: Object,
     default() {
-      return []
+      return [] as Array<ArticleInfo>
     }
   }
 })

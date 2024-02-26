@@ -4,7 +4,7 @@ import { ArticleInfo } from '@/Models/ArticleInfo'
 
 defineProps({
   item: {
-    type: ArticleInfo,
+    type: Object,
     default() {
       return new ArticleInfo()
     }
