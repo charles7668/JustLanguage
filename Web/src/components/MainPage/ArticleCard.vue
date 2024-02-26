@@ -29,7 +29,7 @@ const getBriefText = (htmlText: string) => {
   <v-container style="display: flex; flex-direction: row">
     <v-img alt="test" :src="item.coverImageBase64" width="150px" height="150px" />
     <v-container
-      style="display: flex; flex-direction: column; max-height: 150px"
+      style="display: flex; flex-direction: column; max-height: 160px"
       id="article-container"
     >
       <v-row style="margin: 0">
