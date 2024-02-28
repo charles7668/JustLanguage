@@ -8,7 +8,8 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      props: (route) => ({ page: route.query.page })
     },
     {
       path: '/articles/:articleId',

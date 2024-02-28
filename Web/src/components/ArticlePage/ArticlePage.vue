@@ -92,17 +92,27 @@ const textToSpeech = () => {
       </v-row>
     </v-app-bar>
     <v-main @click="mouseClick">
-      <v-toolbar ref="selectionTools" id="selection-tools" density="compact" :style="{
-        maxWidth: '200px',
-        position: 'absolute',
-        left: `${selectionToolsLeft}px`,
-        top: `${selectionToolsTop}px`,
-        visibility: selectionToolsVisible ? 'visible' : 'hidden',
-        transitionDuration: '0s'
-      }">
-        <v-tooltip v-model="translateShow" location="top" max-width="500px" :style="{
-          visibility: translateText === '' ? 'hidden' : 'visible'
-        }">
+      <v-toolbar
+        ref="selectionTools"
+        id="selection-tools"
+        density="compact"
+        :style="{
+          maxWidth: '200px',
+          position: 'absolute',
+          left: `${selectionToolsLeft}px`,
+          top: `${selectionToolsTop}px`,
+          visibility: selectionToolsVisible ? 'visible' : 'hidden',
+          transitionDuration: '0s'
+        }"
+      >
+        <v-tooltip
+          v-model="translateShow"
+          location="top"
+          max-width="500px"
+          :style="{
+            visibility: translateText === '' ? 'hidden' : 'visible'
+          }"
+        >
           <template v-slot:activator="{ props }">
             <v-btn @click="tryTranslate" v-bind="props" color="primary">Translate</v-btn>
           </template>

@@ -71,6 +71,10 @@ export const deleteArticleByIdApi = async (id: number) => {
   })
 }
 
+export const getArticleCountApi = async () => {
+  return await fetch(apiUrl + '/api/Articles/Count')
+}
+
 export {
   postParseRules,
   getParseRuleNames,
