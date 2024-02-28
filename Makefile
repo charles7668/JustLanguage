@@ -12,7 +12,7 @@ frontend: install build-frontend
 .PHONY: backend
 backend:
 	dotnet restore
-	dotnet build
+	dotnet publish -c Release
 
 .PHONY: build-all
 build-all: frontend backend
