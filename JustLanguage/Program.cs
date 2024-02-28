@@ -1,5 +1,6 @@
 using JustLanguage.Extensions;
 using JustLanguage.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -12,7 +13,15 @@ builder.Host.UseSerilog((context, service, config) =>
 // Add services to the container.
 
 builder.Services.InitServices();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("cache-one-hour",
+        new CacheProfile
+        {
+            Duration = 60 * 60,
+            Location = ResponseCacheLocation.Any
+        });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,6 +54,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+
+app.UseResponseCaching();
 
 app.UseHttpsRedirection();
 

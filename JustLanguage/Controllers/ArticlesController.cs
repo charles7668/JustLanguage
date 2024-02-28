@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 using HtmlAgilityPack;
@@ -160,6 +161,7 @@ public class ArticlesController : Controller
     }
 
     [HttpGet("{id}")]
+    [ResponseCache(CacheProfileName = "cache-one-hour")]
     public async Task<ActionResult<ArticleInfoDTO>> GetArticle(int id)
     {
         ArticleInfoDTO? articleDto = await _articleInfoRepository.GetArticle(id);
