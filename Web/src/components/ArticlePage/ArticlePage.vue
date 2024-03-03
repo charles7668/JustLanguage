@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import {onMounted, ref} from 'vue'
 import router from '@/router'
-import { getArticleByIdApi, getTranslateResultApi } from '@/Api/Api'
-import { ArticleInfo } from '@/Models/ArticleInfo'
-import type { VContainer, VMain } from 'vuetify/components'
+import {getArticleByIdApi, getTranslateResultApi} from '@/Api/Api'
+import {ArticleInfo} from '@/Models/ArticleInfo'
+import type {VContainer, VMain} from 'vuetify/components'
 
 const info = ref<ArticleInfo>(new ArticleInfo())
 const selectionTools = ref<InstanceType<typeof VContainer>>()
@@ -28,8 +28,7 @@ onMounted(async () => {
     router.push({ name: 'home' })
     return
   }
-  const data = await response.json()
-  info.value = data
+  info.value = await response.json()
   console.log(info.value.title)
 })
 
