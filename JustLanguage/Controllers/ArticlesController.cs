@@ -1,6 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
 using HtmlAgilityPack;
 using JustLanguage.Constants;
@@ -14,30 +12,22 @@ namespace JustLanguage.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ArticlesController : Controller
+public class ArticlesController(ILogger<ArticlesController> logger, IUnitOfWork unitOfWork, IHttpCrawler crawler)
+    : Controller
 {
-    public ArticlesController(ILogger<ArticlesController> logger, IUnitOfWork unitOfWork, IHttpCrawler crawler)
-    {
-        _parseRuleRepository = unitOfWork.ParseRuleRepository;
-        _articleInfoRepository = unitOfWork.ArticleInfoRepository;
-        _logger = logger;
-        _httpCrawler = crawler;
-    }
-
-    private readonly IArticleInfoRepository _articleInfoRepository;
+    private readonly IArticleInfoRepository _articleInfoRepository = unitOfWork.ArticleInfoRepository;
 
     /// <summary>
     /// default http crawler
     /// </summary>
-    private readonly IHttpCrawler _httpCrawler;
+    private readonly IHttpCrawler _httpCrawler = crawler;
 
-    private readonly ILogger<ArticlesController> _logger;
-    private readonly IParseRuleRepository _parseRuleRepository;
+    private readonly IParseRuleRepository _parseRuleRepository = unitOfWork.ParseRuleRepository;
 
     [HttpPost]
     public async Task<ActionResult<ArticleInfoDTO>> UploadArticle([FromBody] UploadArticleDTO dto)
     {
-        _logger.LogInformation("input : {@DTO}", dto);
+        logger.LogInformation("input : {@Dto}", dto);
         bool exist = await _articleInfoRepository.HasDuplicateArticle(dto);
         if (exist)
         {
@@ -124,7 +114,7 @@ public class ArticlesController : Controller
 
         string TryToParse(string keyName, Func<HtmlNodeCollection?, string> extractFunction)
         {
-            _logger.LogInformation("try to parse {KeyName}", keyName);
+            logger.LogInformation("try to parse {KeyName}", keyName);
             if (!ruleDict.TryGetValue(keyName, out string? value))
             {
                 return "";
@@ -137,10 +127,10 @@ public class ArticlesController : Controller
             }
             catch (Exception e)
             {
-                _logger.LogTrace("parse {KeyName} fail : {Error}", keyName, e.Message);
+                logger.LogTrace("parse {KeyName} fail : {Error}", keyName, e.Message);
             }
 
-            _logger.LogInformation("parse {KeyName} success", keyName);
+            logger.LogInformation("parse {KeyName} success", keyName);
 
             return extractFunction(targetNode);
         }
