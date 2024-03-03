@@ -82,6 +82,40 @@ const textToSpeech = () => {
   let utterance = new SpeechSynthesisUtterance(selection.toString())
   speechSynthesis.speak(utterance)
 }
+
+const markText = () => {
+  let selection = window.getSelection()
+  if (selection === null || selection?.toString() === '') return
+  let parent = selection.anchorNode?.parentElement as HTMLElement
+  let parentNode = selection.anchorNode?.parentNode as Node
+  let selection_text = selection.toString()
+  let containMark = false
+  if (parent?.nodeName == 'MARK') {
+    let grandParent = parent.parentElement
+    parent.replaceWith(document.createTextNode(parent?.textContent || ''))
+    grandParent?.normalize()
+    return
+  } else {
+    let childNodes = parentNode?.childNodes as NodeListOf<ChildNode>
+    for (let i = 0; i < childNodes.length; i++) {
+      if (childNodes[i].nodeName == 'MARK' && selection.containsNode(childNodes[i], true)) {
+        containMark = true
+        childNodes[i].replaceWith(document.createTextNode(childNodes[i].textContent || ''))
+        parentNode.normalize()
+        break
+      }
+    }
+  }
+  if (containMark) return
+
+  let mark = document.createElement('mark')
+
+  mark.textContent = selection_text
+
+  let range = selection.getRangeAt(0)
+  range.deleteContents()
+  range.insertNode(mark)
+}
 </script>
 
 <template>
@@ -97,7 +131,7 @@ const textToSpeech = () => {
         id="selection-tools"
         density="compact"
         :style="{
-          maxWidth: '200px',
+          maxWidth: '235px',
           position: 'absolute',
           left: `${selectionToolsLeft}px`,
           top: `${selectionToolsTop}px`,
@@ -118,7 +152,8 @@ const textToSpeech = () => {
           </template>
           <span>{{ translateText }}</span>
         </v-tooltip>
-        <v-btn icon="mdi-headphones" color="primary" @click="textToSpeech"> </v-btn>
+        <v-btn icon="mdi-headphones" color="primary" @click="textToSpeech"></v-btn>
+        <v-btn icon="mdi-plus" color="primary" @click="markText"></v-btn>
       </v-toolbar>
       <v-container class="d-flex flex-column justify-center">
         <v-row justify="center">
