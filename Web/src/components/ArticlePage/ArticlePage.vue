@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import router from '@/router'
-import {getArticleByIdApi, getTranslateResultApi} from '@/Api/Api'
-import {ArticleInfo} from '@/Models/ArticleInfo'
-import type {VContainer, VMain} from 'vuetify/components'
+import { getArticleByIdApi, getTranslateResultApi } from '@/Api/Api'
+import { ArticleInfo } from '@/Models/ArticleInfo'
+import type { VContainer, VMain } from 'vuetify/components'
 
 const info = ref<ArticleInfo>(new ArticleInfo())
 const selectionTools = ref<InstanceType<typeof VContainer>>()
@@ -12,6 +12,7 @@ const selectionToolsTop = ref(0)
 const selectionToolsVisible = ref(false)
 const translateText = ref('')
 const translateShow = ref(false)
+const markBtnIcon = ref('mdi-plus')
 
 onMounted(async () => {
   const articleId = Number(router.currentRoute.value.params.articleId)
@@ -37,8 +38,8 @@ const gotoHome = () => {
 }
 
 const mouseClick = () => {
-  let selection = window.getSelection()
-  if (selection === null || selection?.toString() === '') {
+  let selection = window.getSelection() as Selection
+  if (selection.toString() === '') {
     selectionToolsVisible.value = false
     translateText.value = ''
     return
@@ -50,6 +51,12 @@ const mouseClick = () => {
   selectionToolsTop.value =
     rect.y + document.documentElement.scrollTop - selectionTools.value?.$el.clientHeight
   selectionToolsVisible.value = true
+  // check if selection contain mark
+  if (checkSelectionContainMark(selection)) {
+    markBtnIcon.value = 'mdi-minus'
+  } else {
+    markBtnIcon.value = 'mdi-plus'
+  }
 }
 
 const tryTranslate = async () => {
@@ -82,38 +89,52 @@ const textToSpeech = () => {
   speechSynthesis.speak(utterance)
 }
 
-const markText = () => {
-  let selection = window.getSelection()
-  if (selection === null || selection?.toString() === '') return
+const checkSelectionContainMark = (selection: Selection) => {
   let parent = selection.anchorNode?.parentElement as HTMLElement
   let parentNode = selection.anchorNode?.parentNode as Node
-  let selection_text = selection.toString()
   let containMark = false
   if (parent?.nodeName == 'MARK') {
-    let grandParent = parent.parentElement
-    parent.replaceWith(document.createTextNode(parent?.textContent || ''))
-    grandParent?.normalize()
-    return
+    return true
   } else {
     let childNodes = parentNode?.childNodes as NodeListOf<ChildNode>
     for (let i = 0; i < childNodes.length; i++) {
       if (childNodes[i].nodeName == 'MARK' && selection.containsNode(childNodes[i], true)) {
         containMark = true
-        childNodes[i].replaceWith(document.createTextNode(childNodes[i].textContent || ''))
-        parentNode.normalize()
         break
       }
     }
   }
-  if (containMark) return
+  return containMark
+}
 
+const markText = () => {
+  let selection = window.getSelection() as Selection
+  let selectedText = selection.toString()
   let mark = document.createElement('mark')
-
-  mark.textContent = selection_text
-
+  mark.textContent = selectedText
   let range = selection.getRangeAt(0)
   range.deleteContents()
   range.insertNode(mark)
+}
+
+const unmarkText = () => {
+  let selection = window.getSelection() as Selection
+  let parent = selection.anchorNode?.parentElement as HTMLElement
+  let parentNode = selection.anchorNode?.parentNode as Node
+  if (parent.nodeName == 'MARK') {
+    let grandParent = parent.parentElement as HTMLElement
+    parent.replaceWith(document.createTextNode(parent?.textContent || ''))
+    grandParent.normalize()
+    return
+  } else {
+    let childNodes = parentNode.childNodes as NodeListOf<ChildNode>
+    for (let i = 0; i < childNodes.length; i++) {
+      if (childNodes[i].nodeName == 'MARK' && selection.containsNode(childNodes[i], true)) {
+        childNodes[i].replaceWith(document.createTextNode(childNodes[i].textContent || ''))
+        parentNode.normalize()
+      }
+    }
+  }
 }
 </script>
 
@@ -152,7 +173,11 @@ const markText = () => {
           <span>{{ translateText }}</span>
         </v-tooltip>
         <v-btn icon="mdi-headphones" color="primary" @click="textToSpeech"></v-btn>
-        <v-btn icon="mdi-plus" color="primary" @click="markText"></v-btn>
+        <v-btn
+          :icon="markBtnIcon"
+          color="primary"
+          @click="markBtnIcon === 'mdi-plus' ? markText() : unmarkText()"
+        ></v-btn>
       </v-toolbar>
       <v-container class="d-flex flex-column justify-center">
         <v-row justify="center">
